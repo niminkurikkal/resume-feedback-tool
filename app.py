@@ -100,7 +100,7 @@ if analyse:
 You are a professional resume coach and ATS expert.
 Analyse the resume against the job description. Return in EXACTLY this format:
 
-ATS SCORE: [number 0-100]
+ATS SCORE: [write only a number between 0 and 100, example: 72]
 MATCHED KEYWORDS: [comma separated list]
 MISSING KEYWORDS: [comma separated list]
 STRENGTHS:
@@ -162,8 +162,8 @@ JOB DESCRIPTION:
     
             
         except:
-            score_num = "—"
-            score_color = "#888"
+            score_num = 0
+            score_color= "#f87171"
 
         matched_list = [k.strip() for k in matched.split(",") if k.strip()]
         missing_list = [k.strip() for k in missing.split(",") if k.strip()]
