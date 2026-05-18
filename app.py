@@ -6,28 +6,31 @@ from datetime import datetime
 import os
 import fitz
 from groq import Groq
+from supabase import create_client
 from dotenv import load_dotenv
 
 load_dotenv()
 
+# Clients
 client = Groq(api_key="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")
+supabase = create_client(
+    "https://qtvdplgsoijdmotqsien.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0dmRwbGdzb2lqZG1vdHFzaWVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwODk5NDQsImV4cCI6MjA5NDY2NTk0NH0.bGdK25f0TbkfWUTuzHfyF_rnPaEmq13v2_bN310FGm0"
+)
 
-HISTORY_FILE = "score_history.csv"
+# Database functions
+def save_score(email, score, job_title=""):
+    supabase.table("score_history").insert({
+        "user_email": email,
+        "score": score,
+        "job_title": job_title[:100]
+    }).execute()
 
-def save_score(score, job_title=""):
-    now = datetime.now().strftime("%Y-%m-%d %H:%M")
-    new_row = pd.DataFrame({"date": [now], "score": [score], "job": [job_title]})
-    if os.path.exists(HISTORY_FILE):
-        df = pd.read_csv(HISTORY_FILE)
-        df = pd.concat([df, new_row], ignore_index=True)
-    else:
-        df = new_row
-    df.to_csv(HISTORY_FILE, index=False)
-
-def load_history():
-    if os.path.exists(HISTORY_FILE):
-        return pd.read_csv(HISTORY_FILE)
-    return pd.DataFrame(columns=["date", "score", "job"])
+def load_history(email):
+    result = supabase.table("score_history").select("*").eq("user_email", email).order("created_at").execute()
+    if result.data:
+        return pd.DataFrame(result.data)
+    return pd.DataFrame(columns=["user_email", "score", "job_title", "created_at"])
 
 st.set_page_config(page_title="Resume Feedback Tool", page_icon="📄", layout="centered")
 
@@ -54,13 +57,18 @@ html, body, [class*="css"], .stApp { font-family: 'Montserrat', sans-serif !impo
 .dot-red { width: 8px; height: 8px; border-radius: 50%; background: #f87171; flex-shrink: 0; margin-top: 4px; }
 .stButton > button { background: linear-gradient(135deg, #5B6BF8, #8b5cf6) !important; color: white !important; font-family: 'Montserrat', sans-serif !important; font-weight: 600 !important; font-size: 15px !important; border-radius: 12px !important; border: none !important; padding: 16px !important; width: 100% !important; }
 .stTextArea textarea { background: #151820 !important; border: 1px solid #2d3148 !important; border-radius: 10px !important; color: #ccc !important; font-family: 'Montserrat', sans-serif !important; font-size: 13px !important; }
+.stTextInput input { background: #151820 !important; border: 1px solid #2d3148 !important; border-radius: 10px !important; color: #ccc !important; font-family: 'Montserrat', sans-serif !important; font-size: 13px !important; }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="main-title">📄 Resume Feedback Tool</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-title">Upload your resume and paste a job description — get instant AI feedback</div>', unsafe_allow_html=True)
 
-st.markdown('<div class="card-label">📎 Step 1 — Upload your resume (PDF)</div>', unsafe_allow_html=True)
+# Email login
+st.markdown('<div class="card-label">👤 Enter your email to save your progress</div>', unsafe_allow_html=True)
+user_email = st.text_input("", placeholder="yourname@email.com", label_visibility="collapsed")
+
+st.markdown('<div class="card-label" style="margin-top:1rem">📎 Upload your resume (PDF)</div>', unsafe_allow_html=True)
 uploaded_file = st.file_uploader("", type="pdf", label_visibility="collapsed")
 
 resume_text = ""
@@ -73,14 +81,16 @@ if uploaded_file is not None:
     st.success(f"✅ {uploaded_file.name} uploaded · {page_count} page(s) detected")
 
 st.markdown("<br>", unsafe_allow_html=True)
-st.markdown('<div class="card-label">💼 Step 2 — Paste the job description</div>', unsafe_allow_html=True)
+st.markdown('<div class="card-label">💼 Paste the job description</div>', unsafe_allow_html=True)
 jd = st.text_area("", height=200, placeholder="Paste the full job description here...", label_visibility="collapsed")
 
 st.markdown("<br>", unsafe_allow_html=True)
 analyse = st.button("🔍 Analyse My Resume")
 
 if analyse:
-    if not resume_text:
+    if not user_email.strip():
+        st.warning("Please enter your email first to save your progress.")
+    elif not resume_text:
         st.warning("Please upload your resume PDF first.")
     elif not jd.strip():
         st.warning("Please paste a job description.")
@@ -146,7 +156,7 @@ JOB DESCRIPTION:
 
         try:
             score_num = int(''.join(filter(str.isdigit, score)))
-            save_score(score_num, jd[:50])
+            save_score(user_email, score_num, jd[:100])
             score_color = "#4ade80" if score_num >= 75 else "#facc15" if score_num >= 50 else "#f87171"
         except:
             score_num = "—"
@@ -201,17 +211,18 @@ JOB DESCRIPTION:
         st.markdown('<div class="card-label">🎯 Top advice</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="advice-box">{advice.strip()}</div>', unsafe_allow_html=True)
 
+        # Score History Chart
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown('<div class="card-label">📈 Your ATS score history</div>', unsafe_allow_html=True)
 
-        history = load_history()
+        history = load_history(user_email)
         if len(history) >= 2:
             fig, ax = plt.subplots(figsize=(8, 3))
             fig.patch.set_facecolor('#1e2130')
             ax.set_facecolor('#151820')
-            history['date'] = pd.to_datetime(history['date'])
-            ax.plot(history['date'], history['score'], color='#5B6BF8', linewidth=2.5, marker='o', markersize=7, markerfacecolor='#5B6BF8', markeredgecolor='white', markeredgewidth=1.5)
-            ax.fill_between(history['date'], history['score'], alpha=0.15, color='#5B6BF8')
+            history['created_at'] = pd.to_datetime(history['created_at'])
+            ax.plot(history['created_at'], history['score'], color='#5B6BF8', linewidth=2.5, marker='o', markersize=7, markerfacecolor='#5B6BF8', markeredgecolor='white', markeredgewidth=1.5)
+            ax.fill_between(history['created_at'], history['score'], alpha=0.15, color='#5B6BF8')
             ax.set_ylim(0, 100)
             ax.set_ylabel('ATS Score', color='#888', fontsize=11)
             ax.tick_params(colors='#888', labelsize=9)
