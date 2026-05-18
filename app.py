@@ -162,7 +162,7 @@ JOB DESCRIPTION:
     
             
         except:
-            score_num = 0
+            score_num = "—"
             score_color= "#f87171"
 
         matched_list = [k.strip() for k in matched.split(",") if k.strip()]
