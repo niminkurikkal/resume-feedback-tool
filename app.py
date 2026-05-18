@@ -155,9 +155,12 @@ JOB DESCRIPTION:
                 advice += line + " "
 
         try:
-            score_num = int(''.join(filter(str.isdigit, score)))
+            digits = ''.join(filter(str.isdigit, score))
+            score_num = int(digits[:3]) if digits else 0
             save_score(user_email, score_num, jd[:100])
             score_color = "#4ade80" if score_num >= 75 else "#facc15" if score_num >= 50 else "#f87171"
+    
+            
         except:
             score_num = "—"
             score_color = "#888"
