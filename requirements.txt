@@ -4,3 +4,4 @@ pymupdf
 python-dotenv
 matplotlib
 pandas
+supabase
