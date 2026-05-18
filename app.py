@@ -297,7 +297,7 @@ JOB DESCRIPTION:
         # Score metrics
         try:
             score_num = int(''.join(filter(str.isdigit, score)))
-	    save_score(score_num, jd[:50])
+        save_score(score_num, jd[:50])
             score_color = "#4ade80" if score_num >= 75 else "#facc15" if score_num >= 50 else "#f87171"
         except:
             score_num = "—"
