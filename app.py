@@ -11,12 +11,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Clients
-client = Groq(api_key="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")
-supabase = create_client(
-    "https://qtvdplgsoijdmotqsien.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0dmRwbGdzb2lqZG1vdHFzaWVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwODk5NDQsImV4cCI6MjA5NDY2NTk0NH0.bGdK25f0TbkfWUTuzHfyF_rnPaEmq13v2_bN310FGm0"
-)
+# Secure Clients initialization using environment variables (Fallback to hardcoded strings)
+GROQ_KEY = os.getenv("GROQ_API_KEY", "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")
+SUPABASE_URL = os.getenv("SUPABASE_URL", "https://qtvdplgsoijdmotqsien.supabase.co")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0dmRwbGdzb2lqZG1vdHFzaWVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwODk5NDQsImV4cCI6MjA5NDY2NTk0NH0.bGdK25f0TbkfWUTuzHfyF_rnPaEmq13v2_bN310FGm0")
+
+client = Groq(api_key=GROQ_KEY)
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Database functions
 def save_score(email, score, job_title=""):
@@ -159,15 +160,14 @@ JOB DESCRIPTION:
             score_num = int(digits[:3]) if digits else 0
             save_score(user_email, score_num, jd[:100])
             score_color = "#4ade80" if score_num >= 75 else "#facc15" if score_num >= 50 else "#f87171"
-    
-            
         except:
-            score_num = "—"
+            score_num = 0
             score_color= "#f87171"
 
         matched_list = [k.strip() for k in matched.split(",") if k.strip()]
         missing_list = [k.strip() for k in missing.split(",") if k.strip()]
 
+        # Primary Results Metrics Display Grid
         st.markdown(f"""
         <div class="metric-grid">
             <div class="metric-box">
@@ -185,6 +185,13 @@ JOB DESCRIPTION:
         </div>
         """, unsafe_allow_html=True)
 
+        # 💡 UI Disclaimer Callout Box (Rendered smoothly below metrics dashboard)
+        st.info(
+            "💡 **Note:** Scoring is powered by semantic AI analysis to provide directional guidance "
+            "and alignment tips. It should be used as an optimization tool, not an absolute corporate guarantee."
+        )
+
+        # Matched / Missing Keyword Analytics Display Cards
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown('<div class="card-label">✅ Matched keywords</div>', unsafe_allow_html=True)
         chips = " ".join([f'<span class="keyword-chip chip-green">{k}</span>' for k in matched_list])
@@ -194,6 +201,7 @@ JOB DESCRIPTION:
         st.markdown(chips2 or "<span style='color:#666; font-size:13px;'>None missing!</span>", unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
+        # Qualitative Strengths vs Weaknesses Multi-Column Layout
         col1, col2 = st.columns(2)
         with col1:
             st.markdown('<div class="card">', unsafe_allow_html=True)
@@ -214,7 +222,7 @@ JOB DESCRIPTION:
         st.markdown('<div class="card-label">🎯 Top advice</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="advice-box">{advice.strip()}</div>', unsafe_allow_html=True)
 
-        # Score History Chart
+        # Relational Supabase Score History Charting Block
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown('<div class="card-label">📈 Your ATS score history</div>', unsafe_allow_html=True)
 
