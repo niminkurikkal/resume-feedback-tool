@@ -3,7 +3,7 @@
 An AI-powered resume analyser that helps freshers optimise their resumes for placements.
 
 ## 🚀 Live App
-👉 [nimin-resume-tool.streamlit.app](https://nimin-resume-tool.streamlit.app)
+👉 [nimin-resume-tool.streamlit.app]
 
 ## ✨ Features
 - Upload your PDF resume and paste a job description
