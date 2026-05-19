@@ -12,9 +12,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Secure Clients initialization using environment variables (Fallback to hardcoded strings)
-GROQ_KEY = os.getenv("GROQ_API_KEY")
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+GROQ_KEY = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
+SUPABASE_URL = st.secrets.get("SUPABASE_URL") or os.getenv("SUPABASE_URL")
+SUPABASE_KEY = st.secrets.get("SUPABASE_KEY") or os.getenv("SUPABASE_KEY")
 client = Groq(api_key=GROQ_KEY)
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
