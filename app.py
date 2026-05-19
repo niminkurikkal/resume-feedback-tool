@@ -12,10 +12,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Secure Clients initialization using environment variables (Fallback to hardcoded strings)
-GROQ_KEY = os.getenv("GROQ_API_KEY", "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")
-SUPABASE_URL = os.getenv("SUPABASE_URL", "https://qtvdplgsoijdmotqsien.supabase.co")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0dmRwbGdzb2lqZG1vdHFzaWVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwODk5NDQsImV4cCI6MjA5NDY2NTk0NH0.bGdK25f0TbkfWUTuzHfyF_rnPaEmq13v2_bN310FGm0")
-
+GROQ_KEY = os.getenv("GROQ_API_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 client = Groq(api_key=GROQ_KEY)
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
