@@ -71,15 +71,23 @@ user_email = st.text_input("", placeholder="yourname@email.com", label_visibilit
 st.markdown('<div class="card-label" style="margin-top:1rem">📎 Upload your resume (PDF)</div>', unsafe_allow_html=True)
 uploaded_file = st.file_uploader("", type="pdf", label_visibility="collapsed")
 
-resume_text = ""
+if "resume_text" not in st.session_state:
+    st.session_state.resume_text = ""
+if "resume_name" not in st.session_state:
+    st.session_state.resume_name = ""
+
 if uploaded_file is not None:
     page_count = 0
     with fitz.open(stream=uploaded_file.read(), filetype="pdf") as doc:
         page_count = len(doc)
         for page in doc:
-            resume_text += page.get_text()
+            st.session_state.resume_text += page.get_text()
+    st.session_state.resume_name = uploaded_file.name
     st.success(f"✅ {uploaded_file.name} uploaded · {page_count} page(s) detected")
+elif st.session_state.resume_name:
+    st.success(f"✅ {st.session_state.resume_name} ready")
 
+resume_text = st.session_state.resume_text
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown('<div class="card-label">💼 Paste the job description</div>', unsafe_allow_html=True)
 jd = st.text_area("", height=200, placeholder="Paste the full job description here...", label_visibility="collapsed")
