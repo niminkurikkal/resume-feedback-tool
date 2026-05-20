@@ -84,7 +84,8 @@ if uploaded_file is not None:
         for page in doc:
             extracted += page.get_text()
     if not extracted.strip():
-        st.error("⚠️ Could not read text from this PDF. It may be a scanned image. Please export your resume as a text-based PDF from Word or Google Docs and try again.")
+        st.error("⚠️ Could not read text from this PDF. It may be a scanned image PDF.")
+        st.info("💡 Fix: Open your resume in Word or Google Docs → Download/Export as PDF → Upload that new file. This takes 2 minutes and fixes the issue permanently!")
     else:
         st.session_state.resume_text = extracted
         st.session_state.resume_name = uploaded_file.name
