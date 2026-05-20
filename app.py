@@ -78,12 +78,17 @@ if "resume_name" not in st.session_state:
 
 if uploaded_file is not None:
     page_count = 0
+    extracted = ""
     with fitz.open(stream=uploaded_file.read(), filetype="pdf") as doc:
         page_count = len(doc)
         for page in doc:
-            st.session_state.resume_text += page.get_text()
-    st.session_state.resume_name = uploaded_file.name
-    st.success(f"✅ {uploaded_file.name} uploaded · {page_count} page(s) detected")
+            extracted += page.get_text()
+    if not extracted.strip():
+        st.error("⚠️ Could not read text from this PDF. It may be a scanned image. Please export your resume as a text-based PDF from Word or Google Docs and try again.")
+    else:
+        st.session_state.resume_text = extracted
+        st.session_state.resume_name = uploaded_file.name
+        st.success(f"✅ {uploaded_file.name} uploaded · {page_count} page(s) detected")
 elif st.session_state.resume_name:
     st.success(f"✅ {st.session_state.resume_name} ready")
 
