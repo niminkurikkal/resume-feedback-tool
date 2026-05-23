@@ -161,7 +161,7 @@ div[data-testid="stFileUploader"] {
 }
 </style>
 """, unsafe_allow_html=True)
-st.markdown('<div class="main-title">Resume Feedback Tool</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">RESUME FEEDBACK TOOL</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-title">AI-powered ATS analysis · Built for placement prep</div>', unsafe_allow_html=True)
 # Email login
 st.markdown('<div class="card-label">👤 Enter your email to save your progress</div>', unsafe_allow_html=True)
@@ -341,14 +341,14 @@ JOB DESCRIPTION:
         history = load_history(user_email)
         if len(history) >= 2:
             fig, ax = plt.subplots(figsize=(8, 3))
-            fig.patch.set_facecolor('#1e2130')
-            ax.set_facecolor('#151820')
+            fig.patch.set_facecolor('#ffffff')
+            ax.set_facecolor('#fafbff')
             history['created_at'] = pd.to_datetime(history['created_at'])
             ax.plot(history['created_at'], history['score'], color='#5B6BF8', linewidth=2.5, marker='o', markersize=7, markerfacecolor='#5B6BF8', markeredgecolor='white', markeredgewidth=1.5)
             ax.fill_between(history['created_at'], history['score'], alpha=0.15, color='#5B6BF8')
             ax.set_ylim(0, 100)
-            ax.set_ylabel('ATS Score', color='#888', fontsize=11)
-            ax.tick_params(colors='#888', labelsize=9)
+            ax.set_ylabel('ATS Score', color='#333', fontsize=11)
+            ax.tick_params(colors='#333', labelsize=9)
             ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
             plt.xticks(rotation=30)
             for spine in ax.spines.values():
@@ -361,15 +361,15 @@ JOB DESCRIPTION:
 
             st.markdown(f"""
             <div style="display:flex; gap:10px; margin-top:10px;">
-                <div class="metric-box" style="background:#151820; border-radius:10px; padding:12px; text-align:center; flex:1;">
+                <div class="metric-box" style="background:#fafbff; border-radius:10px; padding:12px; text-align:center; flex:1;">
                     <div class="metric-num" style="font-size:22px; color:#4ade80;">{int(history['score'].max())}</div>
                     <div class="metric-label">Best score</div>
                 </div>
-                <div class="metric-box" style="background:#151820; border-radius:10px; padding:12px; text-align:center; flex:1;">
+                <div class="metric-box" style="background:#fafbff; border-radius:10px; padding:12px; text-align:center; flex:1;">
                     <div class="metric-num" style="font-size:22px; color:#5B6BF8;">{int(history['score'].mean())}</div>
                     <div class="metric-label">Average score</div>
                 </div>
-                <div class="metric-box" style="background:#151820; border-radius:10px; padding:12px; text-align:center; flex:1;">
+                <div class="metric-box" style="background:#fafbff; border-radius:10px; padding:12px; text-align:center; flex:1;">
                     <div class="metric-num" style="font-size:22px; color:#facc15;">{len(history)}</div>
                     <div class="metric-label">Total analyses</div>
                 </div>
