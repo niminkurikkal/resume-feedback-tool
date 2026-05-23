@@ -36,34 +36,133 @@ st.set_page_config(page_title="Resume Feedback Tool", page_icon="📄", layout="
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
-html, body, [class*="css"], .stApp { font-family: 'Montserrat', sans-serif !important; }
-.stApp { background: #0e1117; }
-.main-title { font-size: 36px; font-weight: 700; color: white; margin: 0 0 8px; line-height: 1.2; }
-.sub-title { font-size: 14px; color: #666; margin-bottom: 2rem; }
-.card { background: #1e2130; border: 1px solid #2d3148; border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem; }
-.card-label { font-size: 11px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
-.metric-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 1rem 0; }
-.metric-box { background: #151820; border-radius: 12px; padding: 16px; text-align: center; }
-.metric-num { font-size: 32px; font-weight: 700; font-family: 'Montserrat', sans-serif; }
-.metric-label { font-size: 11px; color: #666; margin-top: 4px; font-family: 'Montserrat', sans-serif; }
-.keyword-chip { display: inline-block; padding: 4px 12px; border-radius: 99px; font-size: 12px; margin: 3px 4px 3px 0; font-family: 'Montserrat', sans-serif; }
-.chip-green { background: #0d2b1a; color: #4ade80; border: 1px solid #1a5c35; }
-.chip-red { background: #2b0d0d; color: #f87171; border: 1px solid #5c1a1a; }
-.advice-box { background: #12162a; border-left: 3px solid #5B6BF8; border-radius: 0 10px 10px 0; padding: 14px 16px; font-size: 13px; color: #aaa; line-height: 1.8; font-family: 'Montserrat', sans-serif; }
-.strength-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid #2d3148; font-size: 13px; color: #ccc; font-family: 'Montserrat', sans-serif; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+html, body, [class*="css"], .stApp { font-family: 'Inter', sans-serif !important; }
+.stApp { background: #ffffff !important; }
+
+.main-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f1c5c;
+    margin: 0 0 6px;
+    letter-spacing: -0.5px;
+}
+.sub-title {
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 2rem;
+}
+.step-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.card-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #0f1c5c;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+}
+.metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin: 1rem 0;
+}
+.metric-box {
+    background: #fafbff;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid #e0e7ff;
+}
+.metric-num {
+    font-size: 28px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+}
+.metric-label {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+    font-family: 'Inter', sans-serif;
+}
+.keyword-chip {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    margin: 3px 4px 3px 0;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+}
+.chip-green { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.chip-red { background: #fff1f2; color: #9f1239; border: 1px solid #fecdd3; }
+.advice-box {
+    background: #fafbff;
+    border-left: 3px solid #0f1c5c;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+    font-family: 'Inter', sans-serif;
+}
+.strength-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+    color: #555;
+    font-family: 'Inter', sans-serif;
+}
 .strength-item:last-child { border-bottom: none; }
-.dot-green { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; flex-shrink: 0; margin-top: 4px; }
-.dot-red { width: 8px; height: 8px; border-radius: 50%; background: #f87171; flex-shrink: 0; margin-top: 4px; }
-.stButton > button { background: linear-gradient(135deg, #5B6BF8, #8b5cf6) !important; color: white !important; font-family: 'Montserrat', sans-serif !important; font-weight: 600 !important; font-size: 15px !important; border-radius: 12px !important; border: none !important; padding: 16px !important; width: 100% !important; }
-.stTextArea textarea { background: #151820 !important; border: 1px solid #2d3148 !important; border-radius: 10px !important; color: #ccc !important; font-family: 'Montserrat', sans-serif !important; font-size: 13px !important; }
-.stTextInput input { background: #151820 !important; border: 1px solid #2d3148 !important; border-radius: 10px !important; color: #ccc !important; font-family: 'Montserrat', sans-serif !important; font-size: 13px !important; }
+.dot-green { width: 8px; height: 8px; border-radius: 50%; background: #166534; flex-shrink: 0; margin-top: 4px; }
+.dot-red { width: 8px; height: 8px; border-radius: 50%; background: #9f1239; flex-shrink: 0; margin-top: 4px; }
+.stButton > button {
+    background: #0f1c5c !important;
+    color: white !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    border-radius: 10px !important;
+    border: none !important;
+    padding: 16px !important;
+    width: 100% !important;
+}
+.stButton > button:hover { opacity: 0.9 !important; }
+.stTextArea textarea {
+    background: #fafbff !important;
+    border: 1.5px solid #e0e7ff !important;
+    border-radius: 10px !important;
+    color: #333 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+}
+.stTextInput input {
+    background: #fafbff !important;
+    border: 1.5px solid #e0e7ff !important;
+    border-radius: 10px !important;
+    color: #333 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+}
+div[data-testid="stFileUploader"] {
+    background: #fafbff !important;
+    border: 1.5px dashed #c7d2fe !important;
+    border-radius: 10px !important;
+}
 </style>
 """, unsafe_allow_html=True)
-
-st.markdown('<div class="main-title">📄 Resume Feedback Tool</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Upload your resume and paste a job description — get instant AI feedback</div>', unsafe_allow_html=True)
-
+st.markdown('<div class="main-title">Resume Feedback Tool</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">AI-powered ATS analysis · Built for placement prep</div>', unsafe_allow_html=True)
 # Email login
 st.markdown('<div class="card-label">👤 Enter your email to save your progress</div>', unsafe_allow_html=True)
 user_email = st.text_input("", placeholder="yourname@email.com", label_visibility="collapsed")
@@ -141,7 +240,7 @@ JOB DESCRIPTION:
             result = response.choices[0].message.content
 
         st.markdown("---")
-        st.markdown('<div class="card-label" style="font-size:14px; color:white; margin-bottom:1rem;">📊 Your Results</div>', unsafe_allow_html=True)
+        st.markdown('<div class="card-label" style="font-size:14px; color:#0f1c5c; margin-bottom:1rem;">📊 Your Results</div>', unsafe_allow_html=True)
 
         lines = result.split('\n')
         score = matched = missing = strengths_raw = weaknesses_raw = advice = ""
@@ -253,9 +352,9 @@ JOB DESCRIPTION:
             ax.xaxis.set_major_formatter(mdates.DateFormatter('%d %b'))
             plt.xticks(rotation=30)
             for spine in ax.spines.values():
-                spine.set_edgecolor('#2d3148')
+                spine.set_edgecolor('#e0e7ff')
             ax.grid(axis='y', color='#2d3148', linestyle='--', alpha=0.5)
-            ax.axhline(y=75, color='#4ade80', linestyle='--', alpha=0.4, linewidth=1)
+            ax.axhline(y=75, color='#e0e7ff', linestyle='--', alpha=0.5, linewidth=1)
             plt.tight_layout()
             st.pyplot(fig)
             plt.close()
