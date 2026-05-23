@@ -32,7 +32,7 @@ def load_history(email):
         return pd.DataFrame(result.data)
     return pd.DataFrame(columns=["user_email", "score", "job_title", "created_at"])
 
-st.set_page_config(page_title="Resume Feedback Tool", page_icon="📄", layout="centered")
+st.set_page_config(page_title="RESUME FEEDBACK TOOL", page_icon="📄", layout="centered")
 
 st.markdown("""
 <style>
