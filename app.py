@@ -154,23 +154,25 @@ html, body, [class*="css"], .stApp { font-family: 'Inter', sans-serif !important
     font-family: 'Inter', sans-serif !important;
     font-size: 13px !important;
 }
+div[data-testid="stFileUploader"],
 div[data-testid="stFileUploader"] > div,
 div[data-testid="stFileUploader"] > div > div,
-div[data-testid="stFileUploader"] > div > div > div,
-[data-testid="stFileUploadDropzone"],
-[data-testid="stFileUploadDropzone"] > div,
-[class*="uploadedFile"],
-[class*="fileUploader"] {
-    background-color: #fafbff !important;
+section[data-testid="stFileUploadDropzone"],
+section[data-testid="stFileUploadDropzone"] > div,
+.stFileUploader > div {
     background: #fafbff !important;
-    border-color: #c7d2fe !important;
+    background-color: #fafbff !important;
+    border: 1.5px dashed #c7d2fe !important;
+    border-radius: 10px !important;
     color: #333 !important;
 }
-[data-testid="stFileUploadDropzone"] * {
-    color: #555 !important;
+div[data-testid="stFileUploader"] button {
+    background: #0f1c5c !important;
+    color: white !important;
+    border-radius: 8px !important;
 }
-div[class*="st-"] {
-    background-color: #fafbff !important;
+div[data-testid="stFileUploader"] small {
+    color: #999 !important;
 }
 </style>
 """, unsafe_allow_html=True)
