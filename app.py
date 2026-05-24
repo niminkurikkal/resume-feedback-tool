@@ -154,13 +154,14 @@ html, body, [class*="css"], .stApp { font-family: 'Inter', sans-serif !important
     font-family: 'Inter', sans-serif !important;
     font-size: 13px !important;
 }
-div[data-testid="stFileUploader"] {
+div[data-testid="stFileUploader"],
+div[data-testid="stFileUploader"] > div,
+div[data-testid="stFileUploader"] > div > div,
+section[data-testid="stFileUploadDropzone"],
+section[data-testid="stFileUploadDropzone"] > div,
+.stFileUploader > div {
     background: #fafbff !important;
-    border: 1.5px dashed #c7d2fe !important;
-    border-radius: 10px !important;
-}
-div[data-testid="stFileUploader"] > div {
-    background: #fafbff !important;
+    background-color: #fafbff !important;
     border: 1.5px dashed #c7d2fe !important;
     border-radius: 10px !important;
     color: #333 !important;
@@ -170,13 +171,8 @@ div[data-testid="stFileUploader"] button {
     color: white !important;
     border-radius: 8px !important;
 }
-section[data-testid="stFileUploadDropzone"] {
-    background: #fafbff !important;
-    border: 1.5px dashed #c7d2fe !important;
-    border-radius: 10px !important;
-}
-section[data-testid="stFileUploadDropzone"] > div {
-    color: #555 !important;
+div[data-testid="stFileUploader"] small {
+    color: #999 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -213,7 +209,7 @@ elif st.session_state.resume_name:
 
 resume_text = st.session_state.resume_text
 st.markdown("<br>", unsafe_allow_html=True)
-st.markdown('<div class="card-label">💼 Paste the job description</div>', unsafe_allow_html=True)
+st.markdown('<div class="card-label"> Paste the job description</div>', unsafe_allow_html=True)
 jd = st.text_area("", height=200, placeholder="Paste the full job description here...", label_visibility="collapsed")
 
 st.markdown("<br>", unsafe_allow_html=True)
