@@ -61,11 +61,11 @@ html, body, [class*="css"], .stApp { font-family: 'Inter', sans-serif !important
     margin-bottom: 2rem;
 }
 .card-label {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     color: #0f1c5c;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     margin-bottom: 10px;
 }
 .metric-grid {
@@ -159,15 +159,34 @@ div[data-testid="stFileUploader"] {
     border: 1.5px dashed #c7d2fe !important;
     border-radius: 10px !important;
 }
+div[data-testid="stFileUploader"] > div {
+    background: #fafbff !important;
+    border: 1.5px dashed #c7d2fe !important;
+    border-radius: 10px !important;
+    color: #333 !important;
+}
+div[data-testid="stFileUploader"] button {
+    background: #0f1c5c !important;
+    color: white !important;
+    border-radius: 8px !important;
+}
+section[data-testid="stFileUploadDropzone"] {
+    background: #fafbff !important;
+    border: 1.5px dashed #c7d2fe !important;
+    border-radius: 10px !important;
+}
+section[data-testid="stFileUploadDropzone"] > div {
+    color: #555 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 st.markdown('<div class="main-title">RESUME FEEDBACK TOOL</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-title">AI-powered ATS analysis · Built for placement prep</div>', unsafe_allow_html=True)
 # Email login
-st.markdown('<div class="card-label">👤 Enter your email to save your progress</div>', unsafe_allow_html=True)
+st.markdown('<div class="card-label"> Enter your email to save your progress</div>', unsafe_allow_html=True)
 user_email = st.text_input("", placeholder="yourname@email.com", label_visibility="collapsed")
 
-st.markdown('<div class="card-label" style="margin-top:1rem">📎 Upload your resume (PDF)</div>', unsafe_allow_html=True)
+st.markdown('<div class="card-label" style="margin-top:1rem"> Upload your resume (PDF)</div>', unsafe_allow_html=True)
 uploaded_file = st.file_uploader("", type="pdf", label_visibility="collapsed")
 
 if "resume_text" not in st.session_state:
@@ -198,7 +217,7 @@ st.markdown('<div class="card-label">💼 Paste the job description</div>', unsa
 jd = st.text_area("", height=200, placeholder="Paste the full job description here...", label_visibility="collapsed")
 
 st.markdown("<br>", unsafe_allow_html=True)
-analyse = st.button("🔍 Analyse My Resume")
+analyse = st.button(" Analyse My Resume")
 
 if analyse:
     if not user_email.strip():
@@ -305,10 +324,10 @@ JOB DESCRIPTION:
 
         # Matched / Missing Keyword Analytics Display Cards
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-label">✅ Matched keywords</div>', unsafe_allow_html=True)
+        st.markdown('<div class="card-label"> Matched keywords</div>', unsafe_allow_html=True)
         chips = " ".join([f'<span class="keyword-chip chip-green">{k}</span>' for k in matched_list])
         st.markdown(chips or "<span style='color:#666; font-size:13px;'>None found</span>", unsafe_allow_html=True)
-        st.markdown('<div class="card-label" style="margin-top:14px">❌ Missing keywords</div>', unsafe_allow_html=True)
+        st.markdown('<div class="card-label" style="margin-top:14px">Missing keywords</div>', unsafe_allow_html=True)
         chips2 = " ".join([f'<span class="keyword-chip chip-red">{k}</span>' for k in missing_list])
         st.markdown(chips2 or "<span style='color:#666; font-size:13px;'>None missing!</span>", unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
@@ -317,7 +336,7 @@ JOB DESCRIPTION:
         col1, col2 = st.columns(2)
         with col1:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.markdown('<div class="card-label">💪 Strengths</div>', unsafe_allow_html=True)
+            st.markdown('<div class="card-label"> Strengths</div>', unsafe_allow_html=True)
             for s in strengths_raw.split("|"):
                 if s.strip():
                     st.markdown(f'<div class="strength-item"><div class="dot-green"></div>{s.strip()}</div>', unsafe_allow_html=True)
@@ -325,18 +344,18 @@ JOB DESCRIPTION:
 
         with col2:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.markdown('<div class="card-label">⚠️ Weaknesses</div>', unsafe_allow_html=True)
+            st.markdown('<div class="card-label"> Weaknesses</div>', unsafe_allow_html=True)
             for w in weaknesses_raw.split("|"):
                 if w.strip():
                     st.markdown(f'<div class="strength-item"><div class="dot-red"></div>{w.strip()}</div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
-        st.markdown('<div class="card-label">🎯 Top advice</div>', unsafe_allow_html=True)
+        st.markdown('<div class="card-label"> Top advice</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="advice-box">{advice.strip()}</div>', unsafe_allow_html=True)
 
         # Relational Supabase Score History Charting Block
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<div class="card-label">📈 Your ATS score history</div>', unsafe_allow_html=True)
+        st.markdown('<div class="card-label"> Your ATS score history</div>', unsafe_allow_html=True)
 
         history = load_history(user_email)
         if len(history) >= 2:
